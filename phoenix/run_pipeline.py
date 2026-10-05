@@ -235,7 +235,8 @@ def main():
         history_author_ids[i] = item["author_id"]
         for act_idx_str, act_val in item.get("actions", {}).items():
             idx = int(act_idx_str)
-            if idx < num_actions:
+            # Ignore out-of-range IDs; negative indices would alias valid actions.
+            if 0 <= idx < num_actions:
                 history_actions[i, idx] = float(act_val)
 
     user_hashes = hash_user(np.array([user_id], dtype=np.uint64))
